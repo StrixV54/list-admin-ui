@@ -4,7 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { useRef, useState } from "react";
 import { IoSaveOutline } from "react-icons/io5";
 
-export default function TableDataRow({ item, index, checkRow, deleteRow }) {
+export default function SingleRow({ item, index, checkRow, deleteRow }) {
   const [toggleToSave, setToggleToSave] = useState(false);
   const nameDataRef = useRef();
   const emailDataRef = useRef();
@@ -24,6 +24,15 @@ export default function TableDataRow({ item, index, checkRow, deleteRow }) {
     item.email = emailDataRef.current.value;
     item.role = roleDataRef.current.value;
     setToggleToSave(false);
+  };
+
+  const handleEdit = () => {
+    if (toggleToSave) {
+      nameDataRef.current.value = item.name;
+      emailDataRef.current.value = item.email;
+      roleDataRef.current.value = item.role;
+    }
+    setToggleToSave((prev) => !prev);
   };
 
   const deleteTab = () => {
@@ -84,14 +93,7 @@ export default function TableDataRow({ item, index, checkRow, deleteRow }) {
         <td className="gap-4 flex items-center py-4">
           <LiaEdit
             className="edit text-2xl cursor-pointer"
-            onClick={() => {
-              if (toggleToSave) {
-                nameDataRef.current.value = item.name;
-                emailDataRef.current.value = item.email;
-                roleDataRef.current.value = item.role;
-              }
-              setToggleToSave((prev) => !prev);
-            }}
+            onClick={handleEdit}
           />
           {toggleToSave && (
             <IoSaveOutline
